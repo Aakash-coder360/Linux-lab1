@@ -12,3 +12,15 @@ Vagrant multi-VM lab setup using VirtualBox provider.
 - `lab1.txt` – Full PowerShell command and output log for the lab session
 
 ## Commands Used
+mkdir Infraguardian
+cd Infraguardian
+vagrant --version
+vagrant init
+notepad Vagrantfile
+vagrant validate
+vagrant up
+vagrant ssh ubuntu
+vagrant ssh rocky
+vagrant ssh alma
+vagrant halt
+vagrant status
