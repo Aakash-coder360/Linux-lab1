@@ -1,6 +1,3 @@
-Windows PowerShell
-Copyright (C) Microsoft Corporation. All rights reserved.
-
 PS C:\WINDOWS\system32> cd C:\Users\sharm\2601600064
 PS C:\Users\sharm\2601600064> mkdir Infraguardian
 
