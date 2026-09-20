@@ -23,10 +23,10 @@ Vagrant multi-VM lab setup using VirtualBox provider.
 - vagrant ssh rocky
 - vagrant ssh alma
 - vagrant halt
--vagrant status
--vagrant ssh ubuntu
-     -vi lab2.sh
-     -sh lab2.sh
-     -vi s2.sh
-     -sh s2.sh
-     -exit
+- vagrant status
+- vagrant ssh ubuntu
+     - vi lab2.sh
+     - sh lab2.sh
+     - vi s2.sh
+     - sh s2.sh
+     - exit
