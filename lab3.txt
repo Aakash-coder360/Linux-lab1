@@ -1,0 +1,276 @@
+PS C:\Users\sharm\2601600064\Infraguardian> vagrant ssh ubuntu
+Welcome to Ubuntu 22.04.5 LTS (GNU/Linux 5.15.0-160-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Tue Sep 22 06:36:40 AM UTC 2026
+
+  System load:           1.58
+  Usage of /:            15.3% of 30.34GB
+  Memory usage:           11%
+  Swap usage:              0%
+  Processes:              157
+  Users logged in:        0
+  IPv4 address for eth0: 10.0.2.15
+  IPv6 address for eth0: fd17:625c:f037:2:a00:27ff:fe16:ddef
+
+
+This system is built by the Bento project by Chef Software
+More information can be found at https://github.com/chef/bento
+
+Use of this system is acceptance of the OS vendor EULA and License Agreements.
+Last login: Sun Sep 20 15:58:35 2026 from 10.0.2.2
+vagrant@ig-ubuntu:~$ ls
+lab2.sh  s2.sh
+vagrant@ig-ubuntu:~$ vi backup.sh
+vagrant@ig-ubuntu:~$ sudo apt update
+Get:1 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Hit:2 http://us.archive.ubuntu.com/ubuntu jammy InRelease
+Get:3 http://us.archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Get:4 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3,548 kB]
+Get:5 http://us.archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:6 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3,819 kB]
+Get:7 http://security.ubuntu.com/ubuntu jammy-security/main Translation-en [499 kB]
+Get:8 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [6,342 kB]
+Get:9 http://us.archive.ubuntu.com/ubuntu jammy-updates/main Translation-en [567 kB]
+Get:10 http://security.ubuntu.com/ubuntu jammy-security/restricted Translation-en [1,219 kB]
+Get:11 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1,048 kB]
+Get:12 http://us.archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6,579 kB]
+Get:13 http://security.ubuntu.com/ubuntu jammy-security/universe Translation-en [235 kB]
+Get:14 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [69.4 kB]
+Get:15 http://security.ubuntu.com/ubuntu jammy-security/multiverse Translation-en [12.9 kB]
+Get:16 http://us.archive.ubuntu.com/ubuntu jammy-updates/restricted Translation-en [1,263 kB]
+Get:17 http://us.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1,283 kB]
+Get:18 http://us.archive.ubuntu.com/ubuntu jammy-updates/universe Translation-en [324 kB]
+Get:19 http://us.archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [76.8 kB]
+Get:20 http://us.archive.ubuntu.com/ubuntu jammy-updates/multiverse Translation-en [15.9 kB]
+Get:21 http://us.archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [70.2 kB]
+Get:22 http://us.archive.ubuntu.com/ubuntu jammy-backports/main Translation-en [11.4 kB]
+Get:23 http://us.archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [30.8 kB]
+Get:24 http://us.archive.ubuntu.com/ubuntu jammy-backports/universe Translation-en [16.9 kB]
+Fetched 27.4 MB in 24s (1,146 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+179 packages can be upgraded. Run 'apt list --upgradable' to see them.
+vagrant@ig-ubuntu:~$ sudo apt install rsync -y
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Suggested packages:
+  python3-braceexpand
+The following packages will be upgraded:
+  rsync
+1 upgraded, 0 newly installed, 0 to remove and 178 not upgraded.
+Need to get 445 kB of archives.
+After this operation, 16.4 kB of additional disk space will be used.
+Get:1 http://us.archive.ubuntu.com/ubuntu jammy-updates/main amd64 rsync amd64 3.2.7-0ubuntu0.22.04.7 [445 kB]
+Fetched 445 kB in 3s (155 kB/s)
+(Reading database ... 45823 files and directories currently installed.)
+Preparing to unpack .../rsync_3.2.7-0ubuntu0.22.04.7_amd64.deb ...
+Unpacking rsync (3.2.7-0ubuntu0.22.04.7) over (3.2.7-0ubuntu0.22.04.4) ...
+Setting up rsync (3.2.7-0ubuntu0.22.04.7) ...
+rsync.service is a disabled or a static unit not running, not starting it.
+Processing triggers for man-db (2.10.2-1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+vagrant@ig-ubuntu:~$ rsync --version
+rsync  version 3.2.7  protocol version 31
+Copyright (C) 1996-2022 by Andrew Tridgell, Wayne Davison, and others.
+Web site: https://rsync.samba.org/
+Capabilities:
+    64-bit files, 64-bit inums, 64-bit timestamps, 64-bit long ints,
+    socketpairs, symlinks, symtimes, hardlinks, hardlink-specials,
+    hardlink-symlinks, IPv6, atimes, batchfiles, inplace, append, ACLs,
+    xattrs, optional secluded-args, iconv, prealloc, stop-at, no crtimes
+Optimizations:
+    SIMD-roll, no asm-roll, openssl-crypto, no asm-MD5
+Checksum list:
+    xxh128 xxh3 xxh64 (xxhash) md5 md4 sha1 none
+Compress list:
+    zstd lz4 zlibx zlib none
+Daemon auth list:
+    sha512 sha256 sha1 md5 md4
+
+rsync comes with ABSOLUTELY NO WARRANTY.  This is free software, and you
+are welcome to redistribute it under certain conditions.  See the GNU
+General Public Licence for details.
+vagrant@ig-ubuntu:~$ mkdir -p ~/backup_lab/source
+vagrant@ig-ubuntu:~$ echo "Student Information"> ~/backup_lab/source/student.txt
+vagrant@ig-ubuntu:~$ echo "Linux Lab Report"> ~/backup_lab/source/report.tx
+vagrant@ig-ubuntu:~$ echo "Student Information"> ~/backup_lab/source/student.txt
+vagrant@ig-ubuntu:~$ echo "Sample Data"> ~/backup_lab/source/data.txt
+vagrant@ig-ubuntu:~$ ls -l ~/backup_lab/source
+total 12
+-rw-rw-r-- 1 vagrant vagrant 12 Sep 22 07:02 data.txt
+-rw-rw-r-- 1 vagrant vagrant 17 Sep 22 07:01 report.tx
+-rw-rw-r-- 1 vagrant vagrant 20 Sep 22 07:01 student.txt
+vagrant@ig-ubuntu:~$ vi backup.sh
+
+>>>>Press i
+>>>>Enter command
+-- INSERT --
+
+#!/bin/bash
+
+set -euo pipefail
+
+SOURCE="$HOME/backup_lab/source/"
+BACKUP_ROOT="$HOME/backup_lab/backups"
+
+DAILY="$BACKUP_ROOT/daily"
+MONTHLY="$BACKUP_ROOT/monthly"
+YEARLY="$BACKUP_ROOT/yearly"
+
+TODAY=$(date +%Y-%m-%d)
+DAY=$(date +%d)
+MONTH=$(date +%m)
+
+cleanup()
+{
+    echo "Backup operation finished."
+}
+
+trap cleanup EXIT
+
+# Create backup directories
+mkdir -p "$DAILY" "$MONTHLY" "$YEARLY"
+
+echo "Starting backup..."
+echo "Source: $SOURCE"
+
+# Daily backup
+mkdir -p "$DAILY/$TODAY"
+
+rsync -av --delete \
+    "$SOURCE" \
+    "$DAILY/$TODAY/"
+
+echo "Daily backup completed: $DAILY/$TODAY"
+
+# Monthly snapshot - first day of month
+if [ "$DAY" = "01" ]
+then
+    mkdir -p "$MONTHLY/$TODAY"
+
+    rsync -av --delete \
+        "$SOURCE" \
+        "$MONTHLY/$TODAY/"
+
+    echo "Monthly backup created."
+fi
+
+# Yearly snapshot - January 1
+if [ "$DAY" = "01" ] && [ "$MONTH" = "01" ]
+then
+    mkdir -p "$YEARLY/$TODAY"
+
+    rsync -av --delete \
+        "$SOURCE" \
+        "$YEARLY/$TODAY/"
+
+    echo "Yearly backup created."
+fi
+
+# Retention policy
+find "$DAILY" \
+    -mindepth 1 -maxdepth 1 \
+    -type d -mtime +7 \
+    -exec rm -rf {} \;
+
+find "$MONTHLY" \
+    -mindepth 1 -maxdepth 1 \
+    -type d -mtime +30 \
+    -exec rm -rf {} \;
+
+find "$YEARLY" \
+    -mindepth 1 -maxdepth 1 \
+    -type d -mtime +365 \
+    -exec rm -rf {} \;
+
+echo "Retention cleanup completed."
+
+echo
+echo "BACKUP REPORT"
+echo "----------------------------"
+echo "Date   : $(date)"
+echo "Source : $SOURCE"
+echo "Backup : $DAILY/$TODAY"
+echo "Status : SUCCESS"
+echo "----------------------------"
+
+>>>>Press Esc
+>>>>Enter :wq
+
+vagrant@ig-ubuntu:~$ ls
+backup_lab  backup.sh  lab2.sh  s2.sh
+vagrant@ig-ubuntu:~$ cd backup_lab
+vagrant@ig-ubuntu:~/backup_lab$ ls
+source
+vagrant@ig-ubuntu:~/backup_lab$ cd ..
+vagrant@ig-ubuntu:~$ bash backup.sh
+Starting backup...
+Source: /home/vagrant/backup_lab/source/
+sending incremental file list
+./
+data.txt
+report.tx
+student.txt
+
+sent 321 bytes  received 83 bytes  808.00 bytes/sec
+total size is 49  speedup is 0.12
+Daily backup completed: /home/vagrant/backup_lab/backups/daily/2026-09-22
+Retention cleanup completed.
+
+BACKUP REPORT
+--------------------------------
+Date    : Tue Sep 22 07:15:31 AM UTC 2026
+Source  : /home/vagrant/backup_lab/source/
+Backup  : /home/vagrant/backup_lab/backups/daily/2026-09-22
+Status  : SUCCESS
+--------------------------------
+
+Backup operation finished.
+vagrant@ig-ubuntu:~$ ls
+backup_lab  backup.sh  lab2.sh  s2.sh
+vagrant@ig-ubuntu:~$ cd backup_lab
+vagrant@ig-ubuntu:~/backup_lab$ ls
+backups  source
+vagrant@ig-ubuntu:~/backup_lab$ cd backups
+vagrant@ig-ubuntu:~/backup_lab/backups$ ls
+daily  monthly  yearly
+vagrant@ig-ubuntu:~/backup_lab/backups$ cd daily
+vagrant@ig-ubuntu:~/backup_lab/backups/daily$ ls
+2026-09-22
+vagrant@ig-ubuntu:~/backup_lab/backups/daily$ cd ..
+vagrant@ig-ubuntu:~/backup_lab/backups$ cd monthly
+vagrant@ig-ubuntu:~/backup_lab/backups/monthly$ ls
+vagrant@ig-ubuntu:~/backup_lab/backups/monthly$ cd ..
+vagrant@ig-ubuntu:~/backup_lab/backups$ cd yearly
+vagrant@ig-ubuntu:~/backup_lab/backups/yearly$ ls
+vagrant@ig-ubuntu:~/backup_lab/backups/yearly$ cd ..
+vagrant@ig-ubuntu:~/backup_lab/backups$ cd ..
+vagrant@ig-ubuntu:~/backup_lab$ cd source
+vagrant@ig-ubuntu:~/backup_lab/source$ ls
+data.txt  report.tx  student.txt
+vagrant@ig-ubuntu:~/backup_lab/source$ cat data.txt
+Sample Data
+vagrant@ig-ubuntu:~/backup_lab/source$ cat report.txt
+cat: report.txt: No such file or directory
+vagrant@ig-ubuntu:~/backup_lab/source$ cat report.tx
+Linux Lab Report
+vagrant@ig-ubuntu:~/backup_lab/source$ cat student.txt
+Student Information
+vagrant@ig-ubuntu:~/backup_lab/source$
