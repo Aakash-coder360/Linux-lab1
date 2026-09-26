@@ -1,0 +1,516 @@
+vagrant@ig-ubuntu:~$ sudo mkdir -p /var/log/myapp
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ echo "Application started successfully" | sudo tee /var/log/myapp/app.log
+Application started successfully
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ echo "User login successful" | sudo tee -a /var/log/myapp/app.log
+User login successful
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ echo "Database connection successful" | sudo tee -a /var/log/myapp/app.log
+Database connection successful
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ cat /var/log/myapp/app.log
+Application started successfully
+User login successful
+Database connection successful
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo vi /etc/logrotate.d/myapp
+
+>>>>press i
+
+/var/log/myapp/app.log {
+    daily
+    rotate 7
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0644 root root
+}
+
+>>>>press esc
+>>>>:wq
+
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo logrotate -d /etc/logrotate.d/myapp
+WARNING: logrotate in debug mode does nothing except printing debug messages!  Consider using verbose mode (-v) instead if this is not what you want.
+
+reading config file /etc/logrotate.d/myapp
+Reading state from file: /var/lib/logrotate/status
+Allocating hash table for state file, size 64 entries
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+Creating new state
+
+Handling 1 logs
+
+rotating pattern: /var/log/myapp/app.log  after 1 days (7 rotations)
+empty log files are not rotated, old logs are removed
+considering log /var/log/myapp/app.log
+Creating new state
+  Now: 2026-09-26 06:37
+  Last rotated at 2026-09-26 06:00
+  log does not need rotating (log has already been rotated)
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo logrotate -f /etc/logrotate.d/myapp
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ ls -lh /var/log/myapp/
+total 4.0K
+-rw-r--r-- 1 root root  0 Sep 26 06:51 app.log
+-rw-r--r-- 1 root root 86 Sep 26 06:35 app.log.1
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo vi /usr/local/bin/disk-health.sh
+
+>>>>i
+
+#!/bin/bash
+
+LOG="/var/log/disk-health.log"
+{
+    echo "================================="
+    echo "DISK HEALTH REPORT"
+    echo "================================="
+    echo "Date: $(date)"
+    echo "Hostname: $(hostname)"
+    echo
+
+    echo "Disk Usage:"
+    df -h /
+
+    echo
+    echo "Disk Inode Usage:"
+    df -i /
+
+    echo
+} >> "$LOG"
+
+>>>>esc
+>>>>:wq
+
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo chmod +x /usr/local/bin/disk-health.sh
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo /usr/local/bin/disk-health.sh
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo cat /var/log/disk-health.log
+=================================
+DISK HEALTH REPORT
+=================================
+Date: Sat Sep 26 07:00:48 AM UTC 2026
+Hostname: ig-ubuntu
+
+Disk Usage:
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G  4.9G   24G  17% /
+
+Disk Inode Usage:
+Filesystem                         Inodes IUsed   IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv 2031616 46642 1984974    3% /
+
+vagrant@ig-ubuntu:~$ sudo df -h
+Filesystem                         Size  Used Avail Use% Mounted on
+tmpfs                              197M  1.1M  196M   1% /run
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G  4.9G   24G  17% /
+tmpfs                              982M     0  982M   0% /dev/shm
+tmpfs                              5.0M     0  5.0M   0% /run/lock
+/dev/sda2                          2.0G  131M  1.7G   8% /boot
+vagrant                            475G  105G  371G  22% /vagrant
+tmpfs                              197M  8.0K  197M   1% /run/user/1000
+vagrant@ig-ubuntu:~$ sudo vi /etc/systemd/system/disk-health.service
+
+>>>>i
+
+[Unit]
+Description=Generate Disk Health Report
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/disk-health.sh
+
+>>>>esc
+>>>>:wq
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo systemctl daemon-reload
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo systemctl start disk-health.service
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo systemctl status disk-health.service
+○ disk-health.service - Generate Disk Health Report
+     Loaded: loaded (/etc/systemd/system/disk-health.service; static)
+     Active: inactive (dead)
+
+Sep 26 07:08:18 ig-ubuntu systemd[1]: Starting Generate Disk Health Report.>
+Sep 26 07:08:18 ig-ubuntu systemd[1]: disk-health.service: Deactivated succ>
+Sep 26 07:08:18 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+lines 1-7/7 (END)...skipping...
+○ disk-health.service - Generate Disk Health Report
+     Loaded: loaded (/etc/systemd/system/disk-health.service; static)
+     Active: inactive (dead)
+
+Sep 26 07:08:18 ig-ubuntu systemd[1]: Starting Generate Disk Health Report...
+Sep 26 07:08:18 ig-ubuntu systemd[1]: disk-health.service: Deactivated successfully.
+Sep 26 07:08:18 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+>>>> press q
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo tail -20 /var/log/disk-health.log
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G  4.9G   24G  17% /
+
+Disk Inode Usage:
+Filesystem                         Inodes IUsed   IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv 2031616 46642 1984974    3% /
+
+=================================
+DISK HEALTH REPORT
+=================================
+Date: Sat Sep 26 07:08:18 AM UTC 2026
+Hostname: ig-ubuntu
+
+Disk Usage:
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G  4.9G   24G  17% /
+
+Disk Inode Usage:
+Filesystem                         Inodes IUsed   IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv 2031616 46643 1984973    3% /
+
+vagrant@ig-ubuntu:~$ sudo vi /etc/systemd/system/disk-health.timer
+
+>>>> press i
+
+[Unit]
+Description=Run Disk Health Check Hourly
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+
+>>>> esc
+>>>> :wq
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo systemctl daemon-reload
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo systemctl enable --now disk-health.timer
+Created symlink /etc/systemd/system/timers.target.wants/disk-health.timer → /etc/systemd/system/disk-health.timer.
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ systemctl status disk-health.timer
+● disk-health.timer - Run Disk Health Check Hourly
+     Loaded: loaded (/etc/systemd/system/disk-health.timer; enabled; vendor>
+     Active: active (waiting) since Sat 2026-09-26 07:13:52 UTC; 10s ago
+    Trigger: Sat 2026-09-26 08:13:52 UTC; 59min left
+   Triggers: ● disk-health.service
+
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Started Run Disk Health Check Hourly.
+lines 1-7/7 (END)...skipping...
+● disk-health.timer - Run Disk Health Check Hourly
+     Loaded: loaded (/etc/systemd/system/disk-health.timer; enabled; vendor preset: enabled)
+     Active: active (waiting) since Sat 2026-09-26 07:13:52 UTC; 10s ago
+    Trigger: Sat 2026-09-26 08:13:52 UTC; 59min left
+   Triggers: ● disk-health.service
+
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Started Run Disk Health Check Hourly.
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+>>>> q
+vagrant@ig-ubuntu:~$ systemctl list-timers
+NEXT                        LEFT           LAST                        PASS>
+Sat 2026-09-26 08:13:52 UTC 57min left     Sat 2026-09-26 07:13:52 UTC 2min>
+Sat 2026-09-26 15:37:57 UTC 8h left        Thu 2025-10-23 22:26:05 UTC 11 m>
+Sat 2026-09-26 16:07:44 UTC 8h left        Thu 2025-10-23 22:26:05 UTC 11 m>
+Sun 2026-09-27 00:00:00 UTC 16h left       Sat 2026-09-26 05:48:34 UTC 1h 2>
+Sun 2026-09-27 00:00:00 UTC 16h left       Sat 2026-09-26 05:48:34 UTC 1h 2>
+Sun 2026-09-27 03:10:01 UTC 19h left       Sun 2026-09-20 15:49:25 UTC 5 da>
+Sun 2026-09-27 05:41:46 UTC 22h left       Thu 2026-09-24 05:23:09 UTC 2 da>
+Sun 2026-09-27 05:43:29 UTC 22h left       Sat 2026-09-26 05:48:34 UTC 1h 2>
+Mon 2026-09-28 01:13:20 UTC 1 day 17h left Sat 2026-09-26 05:51:46 UTC 1h 2>
+
+9 timers listed.
+Pass --all to see loaded but inactive timers, too.
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ disk-health.timer
+-bash: disk-health.timer: command not found
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo vi /etc/systemd/system/disk-health.timer
+<md/system/disk-health.timer" 11L, 144B written
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ disk-health.timer
+-bash: disk-health.timer: command not found
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo systemctl daemon-reload
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo systemctl restart disk-health.timer
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ systemctl list-timers
+NEXT                        LEFT           LAST                        PASS>
+Sat 2026-09-26 07:23:55 UTC 45s left       Sat 2026-09-26 07:22:55 UTC 14s >
+Sat 2026-09-26 10:38:30 UTC 3h 15min left  Thu 2025-10-23 22:26:05 UTC 11 m>
+Sat 2026-09-26 16:33:18 UTC 9h left        Thu 2025-10-23 22:26:05 UTC 11 m>
+Sun 2026-09-27 00:00:00 UTC 16h left       Sat 2026-09-26 05:48:34 UTC 1h 3>
+Sun 2026-09-27 00:00:00 UTC 16h left       Sat 2026-09-26 05:48:34 UTC 1h 3>
+Sun 2026-09-27 03:10:16 UTC 19h left       Sun 2026-09-20 15:49:25 UTC 5 da>
+Sun 2026-09-27 03:38:13 UTC 20h left       Sat 2026-09-26 05:48:34 UTC 1h 3>
+Sun 2026-09-27 05:41:46 UTC 22h left       Thu 2026-09-24 05:23:09 UTC 2 da>
+Mon 2026-09-28 00:04:13 UTC 1 day 16h left Sat 2026-09-26 05:51:46 UTC 1h 3>
+
+9 timers listed.
+Pass --all to see loaded but inactive timers, too.
+vagrant@ig-ubuntu:~$ sudo tail -30 /var/log/disk-health.log
+/dev/mapper/ubuntu--vg-ubuntu--lv 2031616 46646 1984970    3% /
+
+=================================
+DISK HEALTH REPORT
+=================================
+Date: Sat Sep 26 07:21:47 AM UTC 2026
+Hostname: ig-ubuntu
+
+Disk Usage:
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G  4.9G   24G  17% /
+
+Disk Inode Usage:
+Filesystem                         Inodes IUsed   IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv 2031616 46647 1984969    3% /
+
+=================================
+DISK HEALTH REPORT
+=================================
+Date: Sat Sep 26 07:22:55 AM UTC 2026
+Hostname: ig-ubuntu
+
+Disk Usage:
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G  4.9G   24G  17% /
+
+Disk Inode Usage:
+Filesystem                         Inodes IUsed   IFree IUse% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv 2031616 46647 1984969    3% /
+
+vagrant@ig-ubuntu:~$ sudo journalctl -u disk-health.service
+Sep 26 07:08:18 ig-ubuntu systemd[1]: Starting Generate Disk Health Report.>
+Sep 26 07:08:18 ig-ubuntu systemd[1]: disk-health.service: Deactivated succ>
+Sep 26 07:08:18 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Starting Generate Disk Health Report.>
+Sep 26 07:13:52 ig-ubuntu systemd[1]: disk-health.service: Deactivated succ>
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:21:47 ig-ubuntu systemd[1]: Starting Generate Disk Health Report.>
+Sep 26 07:21:47 ig-ubuntu systemd[1]: disk-health.service: Deactivated succ>
+Sep 26 07:21:47 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:22:55 ig-ubuntu systemd[1]: Starting Generate Disk Health Report.>
+Sep 26 07:22:55 ig-ubuntu systemd[1]: disk-health.service: Deactivated succ>
+Sep 26 07:22:55 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+lines 1-12/12 (END)...skipping...
+Sep 26 07:08:18 ig-ubuntu systemd[1]: Starting Generate Disk Health Report...
+Sep 26 07:08:18 ig-ubuntu systemd[1]: disk-health.service: Deactivated successfully.
+Sep 26 07:08:18 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Starting Generate Disk Health Report...
+Sep 26 07:13:52 ig-ubuntu systemd[1]: disk-health.service: Deactivated successfully.
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:21:47 ig-ubuntu systemd[1]: Starting Generate Disk Health Report...
+Sep 26 07:21:47 ig-ubuntu systemd[1]: disk-health.service: Deactivated successfully.
+Sep 26 07:21:47 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:22:55 ig-ubuntu systemd[1]: Starting Generate Disk Health Report...
+Sep 26 07:22:55 ig-ubuntu systemd[1]: disk-health.service: Deactivated successfully.
+Sep 26 07:22:55 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+>>>> q
+vagrant@ig-ubuntu:~$ sudo journalctl -u disk-health.timer
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Started Run Disk Health Check Hourly.
+Sep 26 07:22:59 ig-ubuntu systemd[1]: disk-health.timer: Deactivated succes>
+Sep 26 07:22:59 ig-ubuntu systemd[1]: Stopped Run Disk Health Check Hourly.
+Sep 26 07:22:59 ig-ubuntu systemd[1]: Stopping Run Disk Health Check Hourly>
+Sep 26 07:22:59 ig-ubuntu systemd[1]: Started Run Disk Health Check Hourly.
+vagrant@ig-ubuntu:~$
+vagrant@ig-ubuntu:~$ sudo journalctl -u disk-health.service -n 10
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:21:47 ig-ubuntu systemd[1]: Starting Generate Disk Health Report.>
+Sep 26 07:21:47 ig-ubuntu systemd[1]: disk-health.service: Deactivated succ>
+Sep 26 07:21:47 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:22:55 ig-ubuntu systemd[1]: Starting Generate Disk Health Report.>
+Sep 26 07:22:55 ig-ubuntu systemd[1]: disk-health.service: Deactivated succ>
+Sep 26 07:22:55 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:24:25 ig-ubuntu systemd[1]: Starting Generate Disk Health Report.>
+Sep 26 07:24:25 ig-ubuntu systemd[1]: disk-health.service: Deactivated succ>
+Sep 26 07:24:25 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+lines 1-10/10 (END)...skipping...
+Sep 26 07:13:52 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:21:47 ig-ubuntu systemd[1]: Starting Generate Disk Health Report...
+Sep 26 07:21:47 ig-ubuntu systemd[1]: disk-health.service: Deactivated successfully.
+Sep 26 07:21:47 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:22:55 ig-ubuntu systemd[1]: Starting Generate Disk Health Report...
+Sep 26 07:22:55 ig-ubuntu systemd[1]: disk-health.service: Deactivated successfully.
+Sep 26 07:22:55 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+Sep 26 07:24:25 ig-ubuntu systemd[1]: Starting Generate Disk Health Report...
+Sep 26 07:24:25 ig-ubuntu systemd[1]: disk-health.service: Deactivated successfully.
+Sep 26 07:24:25 ig-ubuntu systemd[1]: Finished Generate Disk Health Report.
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+>>>> q
+vagrant@ig-ubuntu:~$
